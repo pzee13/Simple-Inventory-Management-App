@@ -46,7 +46,7 @@ function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200 py-12">
+  <div className="min-h-screen bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 py-12">
       <div className="max-w-6xl mx-auto px-6">
 
         {/* Header */}
