@@ -5,29 +5,74 @@ const jwt = require("jsonwebtoken");
 // Register
 exports.register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    let { name, email, password } = req.body;
 
+    // 🔹 Basic field validation
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        message: "All fields are required",
+      });
+    }
+
+    // 🔹 Normalize email
+    email = email.trim().toLowerCase();
+
+    // 🔹 Email validation (strong regex)
+    const emailRegex =
+      /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        message: "Invalid email format",
+      });
+    }
+
+    // 🔹 Strong password validation
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({
+        message:
+          "Password must be at least 8 characters and include uppercase, lowercase, number and special character",
+      });
+    }
+
+    // 🔹 Check existing user
     const userExists = await User.findOne({ email });
-    if (userExists)
-      return res.status(400).json({ message: "User already exists" });
+    if (userExists) {
+      return res.status(400).json({
+        message: "User already exists",
+      });
+    }
 
+    // 🔹 Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // 🔹 Create user
     const user = await User.create({
-      name,
+      name: name.trim(),
       email,
       password: hashedPassword,
     });
 
-    res.status(201).json({ message: "User registered successfully" });
+    res.status(201).json({
+      message: "User registered successfully",
+    });
+
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
 // Login
 exports.login = async (req, res) => {
   try {
+    console.log("Incoming login body:", req.body);
+    console.log("BODY:", req.body);
+    console.log("ss",res)
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
@@ -53,6 +98,7 @@ exports.login = async (req, res) => {
       },
     });
   } catch (error) {
+    console.log(error.message)
     res.status(500).json({ message: error.message });
   }
 };

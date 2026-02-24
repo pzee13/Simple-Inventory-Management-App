@@ -1,6 +1,7 @@
 import { useState } from "react";
 import API from "../api/axios";
 import { useNavigate, Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function Signup() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -8,42 +9,101 @@ function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await API.post("/auth/register", form);
-    navigate("/login");
+
+    try {
+      await API.post("/auth/register", form);
+      toast.success("Account created successfully");
+      navigate("/login");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Signup failed");
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-xl shadow w-96">
-        <h2 className="text-2xl font-bold mb-6 text-center">Signup</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-white to-blue-50 px-4">
 
-        <input
-          className="w-full mb-4 p-3 border rounded"
-          placeholder="Name"
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-        />
+      <div className="w-full max-w-md bg-white/80 backdrop-blur-md shadow-2xl rounded-2xl p-10">
 
-        <input
-          className="w-full mb-4 p-3 border rounded"
-          placeholder="Email"
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-        />
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-800">
+            Create Account
+          </h2>
+          <p className="text-gray-500 text-sm mt-2">
+            Join and start managing your inventory
+          </p>
+        </div>
 
-        <input
-          type="password"
-          className="w-full mb-4 p-3 border rounded"
-          placeholder="Password"
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-        />
+        <form onSubmit={handleSubmit} className="space-y-6">
 
-        <button className="w-full bg-green-600 text-white py-3 rounded">
-          Signup
-        </button>
+          {/* Name */}
+          <div>
+            <label className="block text-sm text-gray-600 mb-1">
+              Full Name
+            </label>
+            <input
+              type="text"
+              value={form.name}
+              onChange={(e) =>
+                setForm({ ...form, name: e.target.value })
+              }
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+              required
+            />
+          </div>
 
-        <p className="mt-4 text-center text-sm">
-          Have account? <Link to="/login" className="text-blue-600">Login</Link>
+          {/* Email */}
+          <div>
+            <label className="block text-sm text-gray-600 mb-1">
+              Email Address
+            </label>
+            <input
+              type="email"
+              value={form.email}
+              onChange={(e) =>
+                setForm({ ...form, email: e.target.value })
+              }
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+              required
+            />
+          </div>
+
+          {/* Password */}
+          <div>
+            <label className="block text-sm text-gray-600 mb-1">
+              Password
+            </label>
+            <input
+              type="password"
+              value={form.password}
+              onChange={(e) =>
+                setForm({ ...form, password: e.target.value })
+              }
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+              required
+            />
+          </div>
+
+          {/* Button */}
+          <button
+            type="submit"
+            className="w-full py-3 rounded-xl bg-green-600 text-white font-medium hover:bg-green-700 shadow-md hover:shadow-lg hover:scale-[1.02] transition"
+          >
+            Create Account
+          </button>
+
+        </form>
+
+        <p className="mt-6 text-center text-sm text-gray-600">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="text-blue-600 font-medium hover:underline"
+          >
+            Login
+          </Link>
         </p>
-      </form>
+
+      </div>
     </div>
   );
 }

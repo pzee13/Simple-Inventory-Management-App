@@ -1,44 +1,107 @@
 import { useState } from "react";
 import API from "../api/axios";
 import { useNavigate, Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await API.post("/auth/login", form);
-    localStorage.setItem("token", res.data.token);
-    navigate("/");
+    try {
+      const res = await API.post("/auth/login", form);
+      localStorage.setItem("token", res.data.token);
+      toast.success("Login successful");
+      navigate("/");
+    } catch (err) {
+      toast.error(
+        err.response?.data?.message || "Invalid credentials"
+      );
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-xl shadow w-96">
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-white to-blue-50 px-4">
 
-        <input
-          className="w-full mb-4 p-3 border rounded"
-          placeholder="Email"
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-        />
+      <div className="w-full max-w-md bg-white/80 backdrop-blur-md shadow-2xl rounded-2xl p-10">
 
-        <input
-          type="password"
-          className="w-full mb-4 p-3 border rounded"
-          placeholder="Password"
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-        />
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-800">
+            Welcome Back
+          </h2>
+          <p className="text-gray-500 text-sm mt-2">
+            Login to manage your inventory
+          </p>
+        </div>
 
-        <button className="w-full bg-blue-600 text-white py-3 rounded">
-          Login
-        </button>
+        <form onSubmit={handleSubmit} className="space-y-6">
 
-        <p className="mt-4 text-center text-sm">
-          No account? <Link to="/signup" className="text-blue-600">Signup</Link>
+          {/* Email */}
+          <div>
+            <label className="block text-sm text-gray-600 mb-1">
+              Email Address
+            </label>
+            <input
+              type="email"
+              value={form.email}
+              onChange={(e) =>
+                setForm({ ...form, email: e.target.value })
+              }
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+              required
+            />
+          </div>
+
+          {/* Password */}
+          <div>
+            <label className="block text-sm text-gray-600 mb-1">
+              Password
+            </label>
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={form.password}
+                onChange={(e) =>
+                  setForm({ ...form, password: e.target.value })
+                }
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none transition pr-12"
+                required
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-3 text-gray-400 hover:text-gray-600 text-sm"
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+          </div>
+
+          {/* Login Button */}
+          <button
+            type="submit"
+            className="w-full py-3 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 shadow-md hover:shadow-lg hover:scale-[1.02] transition"
+          >
+            Login
+          </button>
+
+        </form>
+
+        <p className="mt-6 text-center text-sm text-gray-600">
+          Don’t have an account?{" "}
+          <Link
+            to="/signup"
+            className="text-blue-600 font-medium hover:underline"
+          >
+            Signup
+          </Link>
         </p>
-      </form>
+
+      </div>
     </div>
   );
 }

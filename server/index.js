@@ -8,7 +8,7 @@ const app = express();
 
 // Connect Database
 connectDB();
-
+console.log("ss")
 // Middleware
 app.use(cors());
 app.use(express.json());
