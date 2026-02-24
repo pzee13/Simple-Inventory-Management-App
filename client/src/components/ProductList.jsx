@@ -1,35 +1,52 @@
-function ProductList({ products, onEdit, onDelete }) {
+import { useState } from "react";
+
+function AddProductForm({ onAdd }) {
+  const [product, setProduct] = useState({
+    name: "",
+    description: "",
+    price: "",
+    quantity: "",
+  });
+
   return (
-    <div className="bg-white rounded-lg shadow p-4">
-      <table className="w-full text-left">
-        <thead>
-          <tr className="border-b">
-            <th>Name</th>
-            <th>Price</th>
-            <th>Qty</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((p) => (
-            <tr key={p._id} className="border-b">
-              <td>{p.name}</td>
-              <td>₹{p.price}</td>
-              <td>{p.quantity}</td>
-              <td className="space-x-2">
-                <button onClick={() => onEdit(p)} className="text-blue-600">
-                  Edit
-                </button>
-                <button onClick={() => onDelete(p._id)} className="text-red-600">
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onAdd(product);
+        setProduct({ name: "", description: "", price: "", quantity: "" });
+      }}
+      className="bg-white p-6 rounded-lg shadow mb-6"
+    >
+      <h3 className="font-bold mb-4">Add Product</h3>
+
+      <div className="grid grid-cols-2 gap-4">
+        <input
+          className="p-2 border rounded"
+          placeholder="Name"
+          onChange={(e) => setProduct({ ...product, name: e.target.value })}
+        />
+        <input
+          className="p-2 border rounded"
+          placeholder="Description"
+          onChange={(e) => setProduct({ ...product, description: e.target.value })}
+        />
+        <input
+          className="p-2 border rounded"
+          placeholder="Price"
+          onChange={(e) => setProduct({ ...product, price: e.target.value })}
+        />
+        <input
+          className="p-2 border rounded"
+          placeholder="Quantity"
+          onChange={(e) => setProduct({ ...product, quantity: e.target.value })}
+        />
+      </div>
+
+      <button className="mt-4 bg-blue-600 text-white px-4 py-2 rounded">
+        Add
+      </button>
+    </form>
   );
 }
 
-export default ProductList;
+export default AddProductForm;
