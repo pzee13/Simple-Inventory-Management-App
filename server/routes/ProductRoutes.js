@@ -11,7 +11,7 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 router.use(authMiddleware);
 
-router.get("/", getProducts);
+router.get("/",  getProducts);
 router.post("/", createProduct);
 router.put("/:id", updateProduct);
 router.delete("/:id", deleteProduct);
