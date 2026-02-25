@@ -1,21 +1,30 @@
 🚀 Simple Inventory Management App
+
    A full-stack MERN application with authentication and product management.
 
 🛠 Tech Stack
+==============
 
 Frontend
 -------------
 React (Vite)
+
 React Router
+
 Axios
+
 Tailwind CSS
 
 Backend
 -------------
 Node.js
+
 Express.js
+
 MongoDB
+
 JWT Authentication
+
 Bcrypt
 
 
