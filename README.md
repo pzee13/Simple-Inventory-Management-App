@@ -32,11 +32,11 @@ cd Simple-Inventory-Management-App
 
 1️⃣ Backend Setup
 -----------------
-->cd server
+1.cd server
 
-->npm install
+2.npm install
 
-Create .env file inside /server and add:
+3.Create .env file inside /server and add below 3 things:
 
 PORT=8000
 
@@ -44,7 +44,7 @@ MONGO_URI=your_mongodb_connection_string
 
 JWT_SECRET=your_secret_key
 
-Run backend:
+4.Run backend:
 
 ->npm start
 
@@ -54,11 +54,11 @@ http://localhost:8000
 
 2️⃣ Frontend Setup
 ------------------
-->cd client
+1.cd client
 
-->npm install
+2.npm install
 
-->npm run dev
+3.npm run dev
 
 Frontend runs at:
 http://localhost:5173
