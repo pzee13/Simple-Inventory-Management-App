@@ -25,9 +25,9 @@ Bcrypt
 Clone Repository
 ----------------
 
-git clone https://github.com/pzee13/Simple-Inventory-Management-App.git
+1.git clone https://github.com/pzee13/Simple-Inventory-Management-App.git
 
-cd Simple-Inventory-Management-App
+2.cd Simple-Inventory-Management-App
 
 
 1️⃣ Backend Setup
